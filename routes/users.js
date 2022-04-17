@@ -23,9 +23,15 @@ router.put("/:id", async (req, res) => {
 
     //main functionality
     const user = await User.findByIdAndUpdate(req.params.id, req.body);
+    if(user===null){
+      return res.status(403).json("invalid request");
+    }
+
     res.status(200).json("Updation Successfull!");
+
   } catch (err) {
     console.log(err);
+    res.status(500).json("server error");
   }
 
 });
@@ -40,9 +46,9 @@ router.delete("/:id", async (req, res) => {
 
   try {
     const user = await User.findByIdAndDelete(req.body.userId.toString());
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(404).json("Invalid request");
+    return res.status(404).json("Invalid request");
     console.log(err);
   }
 

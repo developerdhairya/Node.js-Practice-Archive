@@ -28,10 +28,10 @@ router.post('/register', async (req, res) => {
     });
     const savedUser = await user.save();
 
-    res.status(200).json(savedUser);
+    return res.status(200).json(savedUser);
 
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -49,7 +49,7 @@ router.post('/login',async (req, res) => {
     }
 
     const validPassword=await bcrypt.compare(req.body.password,user.password);
-    if(validPassword){
+    if(!validPassword){
       return res.status(404).json("Invalid Password");
     }
 

@@ -6,8 +6,7 @@ const { default: helmet } = require("helmet");
 const morgan = require("morgan");
 const userRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
-const docsRoute = require('./routes/docs');
-
+const postRoute=require("./routes/posts");
 
 
 //Initializing express
@@ -28,7 +27,8 @@ app.use(morgan("common"));
 //routes
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
-app.use("/",docsRoute);
+app.use("/api/posts",postRoute);
+
 
 app.listen(8800, () => console.log("Backend Server is Running"));
 
