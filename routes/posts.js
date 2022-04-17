@@ -92,11 +92,27 @@ router.put("/:postId/like", async (req, res) => {
     }
 });
 
+//Get User Timeline
+router.get("/:userId/timeline", async (req, res) => {
+    //check if userId exists,belongs to user
+    try {
+        const user =await User.findById(req.params.userId);
+        const userPosts = await Post.find({ userId: req.params.userId });
+        if(user.following.length==0){
+            return res.status(200).json(userPosts);
+        }
+        const followingPosts = await Promise.all(
+            user.following.map((followingUserId) => {
+                return Post.find({ userId: followingUserId });
+            })
+        );
 
-
-
-
-
+        return res.status(200).json(userPosts.concat(...followingPosts));
+    }catch(err){
+        console.log(err);
+        res.status(500).json("server error");
+    }
+});
 
 
 module.exports = router
